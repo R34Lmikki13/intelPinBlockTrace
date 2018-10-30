@@ -27,8 +27,10 @@ void BBLHit(void *ip) {
 }
 
 void Trace(TRACE trace, void * v) {
-    if (!IMG_IsMainExecutable(IMG_FindByAddress(TRACE_Address(trace))))
+	IMG img = IMG_FindByAddress(TRACE_Address(trace));
+	if(!IMG_Valid(img) || !IMG_IsMainExecutable(img)){
         return ;
+	}
 
     BBL bbl = TRACE_BblHead(trace); //返回本次Trace的第一个基本块
     for (; BBL_Valid(bbl); bbl = BBL_Next(bbl)) {
